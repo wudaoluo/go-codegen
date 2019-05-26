@@ -1,0 +1,11 @@
+default:
+  logfile: log/codegen.log
+
+mysql:
+  DBuser : root
+  DBpasswd : carlo@123
+  DBaddr : 106.75.100.78
+  DBport : 33306
+  DBname : weiai_push
+  DBmaxconn : 100
+  DBidleconn : 80
