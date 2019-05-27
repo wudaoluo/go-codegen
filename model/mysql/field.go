@@ -13,7 +13,6 @@ type Field struct {
 	Comment  string      //备注
 }
 
-
 type FieldService struct{}
 
 func (f *FieldService) GetFields(tableName string) ([]*Field, error) {
@@ -31,7 +30,7 @@ func (f *FieldService) GetFields(tableName string) ([]*Field, error) {
 	list := make([]*Field, 0)
 	for rows.Next() {
 		msg := new(Field)
-		err = rows.Scan(&msg.Name,&msg.DataType,&msg.Key,&msg.IsNull,&msg.Default,&msg.Comment)
+		err = rows.Scan(&msg.Name, &msg.DataType, &msg.Key, &msg.IsNull, &msg.Default, &msg.Comment)
 		if err != nil {
 			golog.Error("GetFields", "table", tableName, "err", err)
 			return nil, err

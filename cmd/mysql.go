@@ -16,12 +16,12 @@ package cmd
 
 import (
 	"github.com/pkg/errors"
-	"github.com/wudaoluo/golog"
 	"github.com/spf13/cobra"
 	"github.com/wudaoluo/go-codegen/generate"
 	"github.com/wudaoluo/go-codegen/internal"
 	"github.com/wudaoluo/go-codegen/model/mysql"
 	"github.com/wudaoluo/go-codegen/util"
+	"github.com/wudaoluo/golog"
 )
 
 type mysqlInfo struct {
@@ -51,13 +51,13 @@ to quickly create a Cobra application.`,
 		defer mysql.DisconnectDB()
 
 		var data = &mysqlInfo{BasePath: basePath()}
-		g ,err:= getGen(mysqlType(mysqlF.Type), mysqlF.Add, data)
+		g, err := getGen(mysqlType(mysqlF.Type), mysqlF.Add, data)
 		if err != nil {
-			util.Exit(2,err.Error())
+			util.Exit(1, err.Error())
 		}
 		err = g.Gen()
 		if err != nil {
-			util.Exit(3,err.Error())
+			util.Exit(1, err.Error())
 		}
 
 	},
@@ -85,13 +85,13 @@ func getGen(t mysqlType, tableName string, data *mysqlInfo) (generate.Generater,
 			genType = internal.GEN_MYSQL_CONN
 		}
 	default:
-		golog.Warn("输出类型不匹配","type",t)
-		return nil,errors.New("输出类型不匹配 请使用 table|doc")
+		golog.Warn("输出类型不匹配", "type", t)
+		return nil, errors.New("输出类型不匹配 请使用 table|doc")
 	}
 
 	err := t.Setdata(data)
 	if err != nil {
-		golog.Error("t.Setdata","err",err)
+		golog.Error("t.Setdata", "err", err)
 		return nil, err
 	}
 	g := generate.Generate(genType)
@@ -103,13 +103,13 @@ func getGen(t mysqlType, tableName string, data *mysqlInfo) (generate.Generater,
 type mysqlType string
 
 const (
-	MYSQL_DOC  = "doc"
-	MYSQL_INIT = "init"
+	MYSQL_DOC   = "doc"
+	MYSQL_INIT  = "init"
 	MYSQL_TABLE = "table"
 )
 
 func (m mysqlType) Setdata(data *mysqlInfo) error {
-	if m == MYSQL_DOC || m == MYSQL_INIT{
+	if m == MYSQL_DOC || m == MYSQL_INIT {
 		return nil
 	}
 

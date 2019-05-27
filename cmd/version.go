@@ -16,6 +16,7 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/wudaoluo/go-codegen/internal"
 
 	"github.com/spf13/cobra"
@@ -26,7 +27,7 @@ var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "\n打印当前版本",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(internal.PROJECT_NAME,internal.VERSION)
+		fmt.Println(internal.PROJECT_NAME, internal.VERSION)
 	},
 }
 

@@ -3,9 +3,10 @@ package mysql
 import (
 	"bytes"
 	"database/sql"
+
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
 	"github.com/wudaoluo/golog"
-	_ "github.com/go-sql-driver/mysql"
 )
 
 var db *sql.DB
@@ -28,7 +29,7 @@ func InitDB() {
 	golog.Info(buf.String())
 	db, err = sql.Open("mysql", buf.String())
 	if err != nil {
-		golog.Fatal("mysql连接失败", "err",err)
+		golog.Fatal("mysql连接失败", "err", err)
 	}
 
 	//设置连接池
@@ -37,7 +38,7 @@ func InitDB() {
 
 	err = db.Ping()
 	if err != nil {
-		golog.Fatal("mysql ping失败","err", err)
+		golog.Fatal("mysql ping失败", "err", err)
 	}
 	golog.Info("mysql连接成功")
 
@@ -48,15 +49,13 @@ func InitDB() {
 // DisconnectDB disconnects from the database.
 func DisconnectDB() {
 	if err := db.Close(); nil != err {
-		golog.Error("Disconnect from database failed: " ,"err", err.Error())
+		golog.Error("Disconnect from database failed: ", "err", err.Error())
 	}
 }
-
 
 var DBname string
 var DBTable *tableService
 var DBField *FieldService
-
 
 func initService() {
 	DBname = viper.GetString("mysql.DBname")

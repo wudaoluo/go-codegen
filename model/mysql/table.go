@@ -5,14 +5,14 @@ import (
 )
 
 type Table struct {
-	Name string
+	Name    string
 	Comment string
 }
-
 
 type tableService struct {
 	dbName string
 }
+
 /*
 	row := db.QueryRow("select id,user_name,weixin,email,status from user where id = ?",id)
 	u := &User{}
@@ -28,18 +28,16 @@ type tableService struct {
 
 	return u,nil
 */
-func (t *tableService) GetTable(tableName string) (*Table,error) {
+func (t *tableService) GetTable(tableName string) (*Table, error) {
 	sqlText := "SELECT `table_name`, table_comment FROM information_schema.tables " +
 		"WHERE table_schema = ? AND  `table_name` = ?"
-	row := db.QueryRow(sqlText,DBname,tableName)
+	row := db.QueryRow(sqlText, DBname, tableName)
 
 	msg := new(Table)
-	err := row.Scan(&msg.Name,&msg.Comment)
+	err := row.Scan(&msg.Name, &msg.Comment)
 	if err != nil {
-		golog.Error("GetTable","table",tableName,"err",err)
+		golog.Error("GetTable", "table", tableName, "err", err)
 	}
 
-	return msg,err
+	return msg, err
 }
-
-

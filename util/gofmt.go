@@ -1,8 +1,9 @@
 package util
 
 import (
-	"github.com/wudaoluo/goutil"
 	"os/exec"
+
+	"github.com/wudaoluo/goutil"
 )
 
 //TODO 这些命令整理下
@@ -17,7 +18,6 @@ func Gofmt(path string) bool {
 	}
 	return false
 }
-
 
 func ExecCommand(name string, args ...string) bool {
 	cmd := exec.Command(name, args...)

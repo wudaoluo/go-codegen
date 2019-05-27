@@ -16,6 +16,7 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/wudaoluo/go-codegen/internal"
 
 	"github.com/spf13/cobra"
@@ -29,7 +30,7 @@ var updateCmd = &cobra.Command{
 
 		if updateF.List {
 			fmt.Println("get version list")
-		}else {
+		} else {
 			fmt.Println("update called")
 		}
 
@@ -51,5 +52,5 @@ func init() {
 	// is called directly, e.g.:
 	// updateCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	//updateCmd.Flags().BoolP("list","l",false,"打印最新的版本号列表")
-	updateCmd.Flags().BoolVar(&updateF.List,"list",false,"打印最新的版本号列表")
+	updateCmd.Flags().BoolVar(&updateF.List, "list", false, "打印最新的版本号列表")
 }

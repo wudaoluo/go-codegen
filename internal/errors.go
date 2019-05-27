@@ -12,7 +12,6 @@ type TPlError struct {
 	Err     error
 }
 
-
 func (e *TPlError) Error() string {
 	if e == nil {
 		return "<nil>"

@@ -2,34 +2,34 @@ package generate
 
 import (
 	"fmt"
+
 	"github.com/wudaoluo/go-codegen/internal"
 )
 
-
-func (g *Generate)WithImport(args string) string {
+func (g *Generate) WithImport(args string) string {
 	if args != "import" {
 		return ""
 	}
 
 	var iPacket string
-	for k,_ := range g.iType {
+	for k, _ := range g.iType {
 		fmt.Println(k)
-		iPacket += "\""+k+"\""
+		iPacket += "\"" + k + "\""
 	}
 	var a = "import (%s)\n"
-	return fmt.Sprintf(a,iPacket)
+	return fmt.Sprintf(a, iPacket)
 
 }
 
-func (g *Generate)TypeToGo(t string) string {
-	 v,ok := typeToGo[t]
-	 if !ok {
+func (g *Generate) TypeToGo(t string) string {
+	v, ok := typeToGo[t]
+	if !ok {
 		return internal.GoDefaultType
 	}
 
 	switch v {
 	case "time.Time":
-		g.iType["time"] = struct {}{}
+		g.iType["time"] = struct{}{}
 	}
 
 	return v

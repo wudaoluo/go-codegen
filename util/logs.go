@@ -16,7 +16,6 @@ func InitLogs() {
 	)
 }
 
-
 func FlushLogs() {
-	_ = golog.Sync()  //ignore error
+	_ = golog.Sync() //ignore error
 }

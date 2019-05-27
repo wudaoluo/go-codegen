@@ -1,10 +1,10 @@
 package generate
 
 import (
-	"github.com/wudaoluo/golog"
 	"github.com/wudaoluo/go-codegen/generate/generate"
 	"github.com/wudaoluo/go-codegen/generate/mysql"
 	"github.com/wudaoluo/go-codegen/internal"
+	"github.com/wudaoluo/golog"
 )
 
 type Generater interface {
@@ -14,7 +14,6 @@ type Generater interface {
 	SetData(data interface{})
 	AddFuncMap()
 }
-
 
 func Generate(genType internal.Gen) Generater {
 	var g Generater

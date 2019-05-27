@@ -16,12 +16,13 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/wudaoluo/go-codegen/internal"
-	"github.com/wudaoluo/go-codegen/util"
-	"github.com/wudaoluo/golog"
 	"os"
 	"path"
 	"path/filepath"
+
+	"github.com/wudaoluo/go-codegen/internal"
+	"github.com/wudaoluo/go-codegen/util"
+	"github.com/wudaoluo/golog"
 
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
@@ -45,7 +46,7 @@ to quickly create a Cobra application.`,
 	//	Run: func(cmd *cobra.Command, args []string) { },
 	PersistentPostRun: func(cmd *cobra.Command, args []string) {
 		util.Gofmt(rootF.OutPath)
-		golog.Info("格式化代码","path",rootF.OutPath)
+		golog.Info("格式化代码", "path", rootF.OutPath)
 	},
 }
 
@@ -57,7 +58,6 @@ func Execute() {
 		os.Exit(1)
 	}
 }
-
 
 var rootF = new(internal.FlagRoot)
 
@@ -72,8 +72,8 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	//rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	rootCmd.PersistentFlags().BoolVar(&rootF.Debug,"debug",false,"开启debug模式 开启后不生成任何文件")
-	rootCmd.PersistentFlags().StringVarP(&rootF.OutPath,"outPath","o",".","指定生成的文件路径")
+	rootCmd.PersistentFlags().BoolVar(&rootF.Debug, "debug", false, "开启debug模式 开启后不生成任何文件")
+	rootCmd.PersistentFlags().StringVarP(&rootF.OutPath, "outPath", "o", ".", "指定生成的文件路径")
 
 }
 
@@ -99,13 +99,12 @@ func initConfig() {
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		golog.Info("Using config file:"+viper.ConfigFileUsed())
+		golog.Info("Using config file:" + viper.ConfigFileUsed())
 	}
 }
 
-
 func destFile(descFile string) string {
-	return path.Join(rootF.OutPath,descFile)
+	return path.Join(rootF.OutPath, descFile)
 }
 
 func basePath() string {
