@@ -40,4 +40,10 @@
    ```
    
    ### 生成mysql链接
-   codegen mysql --add 表名 -o 指定目录
+    codegen mysql --add init -o 指定目录
+   
+   ### 生成表结构和curd语句
+    codegen mysql --add 表名 -o 指定目录
+    
+   ### 生成表文档
+    codegen mysql --add 表名 -o 指定目录 --type doc
