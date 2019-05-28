@@ -25,7 +25,7 @@ import (
 // versionCmd represents the version command
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "\n打印当前版本",
+	Short: "打印当前版本",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(internal.PROJECT_NAME, internal.VERSION)
 	},
