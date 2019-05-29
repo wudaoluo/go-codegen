@@ -3,8 +3,8 @@ default:
 
 mysql:
   DBuser : root
-  DBpasswd : carlo@123
-  DBaddr : 106.75.100.78
+  DBpasswd : 123456
+  DBaddr : 127.0.0.1
   DBport : 3306
   DBname : weiai_push
   DBmaxconn : 100

@@ -55,11 +55,13 @@ func DisconnectDB() {
 
 var DBname string
 var DBTable *tableService
-var DBField *FieldService
+var DBField *fieldService
+var DBIndex *indexService
 
 func initService() {
 	DBname = viper.GetString("mysql.DBname")
 
 	DBTable = &tableService{}
-	DBField = &FieldService{}
+	DBField = &fieldService{}
+	DBIndex = &indexService{}
 }

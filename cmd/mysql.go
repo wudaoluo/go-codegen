@@ -15,6 +15,7 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/wudaoluo/go-codegen/generate"
@@ -25,26 +26,18 @@ import (
 )
 
 type mysqlInfo struct {
-	BasePath string
 	Name     string
 	Comment  string
 	Fields   []*mysql.Field
+	Indexs   []*mysql.Index
 }
 
 // mysqlCmd represents the mysql command
 var mysqlCmd = &cobra.Command{
 	Use:   "mysql",
 	Short: "生成mysql语句和markdown文档",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Long: ``,
 	PreRun: func(cmd *cobra.Command, args []string) {
-		if mysqlF.Doc {
-			mysqlF.Add = "database"
-		}
 		if mysqlF.Add == "" && !mysqlF.Doc {
 			util.Exit(1, "mysql -add not value")
 		}
@@ -53,32 +46,14 @@ to quickly create a Cobra application.`,
 		mysql.InitDB()
 		defer mysql.DisconnectDB()
 
-		fn := func() {
-			var data = &mysqlInfo{BasePath: basePath()}
-			g, err := getGen(getMysqlType(mysqlF.Doc, mysqlF.Add), mysqlF.Add, data)
-			if err != nil {
-				util.Exit(1, err.Error())
-			}
-			err = g.Gen()
-			if err != nil {
-				util.Exit(1, err.Error())
-			}
-		}
-
-		if !mysqlF.Doc {
-			fn()
-			return
-		}
-
-		tableList,err := mysql.DBTable.TableList()
+		g, err := getGen(getMysqlType(mysqlF.Doc, mysqlF.Add), mysqlF.Add)
 		if err != nil {
 			util.Exit(1, err.Error())
 		}
-		for _,list := range tableList{
-			mysqlF.Add = list.Name
-			fn()
+		err = g.Gen()
+		if err != nil {
+			util.Exit(1, err.Error())
 		}
-
 	},
 }
 
@@ -91,12 +66,12 @@ func init() {
 	mysqlCmd.Flags().BoolVar(&mysqlF.Doc, "doc", false, "--doc")
 }
 
-func getGen(t mysqlType, tableName string, data *mysqlInfo) (generate.Generater, error) {
+func getGen(t mysqlType, tableName string) (generate.Generater, error) {
 	var genType internal.Gen
-
 	switch t {
 	case MYSQL_DOC:
 		genType = internal.GEN_MYSQL_DOC
+		tableName = mysql.DBname
 	case MYSQL_INIT:
 		genType = internal.GEN_MYSQL_CONN
 	case MYSQL_TABLE:
@@ -107,13 +82,15 @@ func getGen(t mysqlType, tableName string, data *mysqlInfo) (generate.Generater,
 		return nil, errors.New("输出类型不匹配 请使用 table|doc")
 	}
 
-	err := t.Setdata(data)
+	data,err := t.GetData()
 	if err != nil {
 		golog.Error("t.Setdata", "err", err)
 		return nil, err
 	}
 	g := generate.Generate(genType)
 	g.SetDest(destFile(tableName) + genType.FileSuffix())
+	g.SetPacket(rootF.OutPath)
+	fmt.Println("data",data)
 	g.SetData(data)
 	return g, nil
 }
@@ -139,24 +116,63 @@ func getMysqlType(mysqlDoc bool, tableName string) mysqlType {
 
 }
 
-func (m mysqlType) Setdata(data *mysqlInfo) error {
+func (m mysqlType) GetData() (interface{},error) {
 	if m == MYSQL_INIT {
-		return nil
+		return nil,nil
 	}
 
-	tableInfo, err := mysql.DBTable.GetTable(mysqlF.Add)
-	if err != nil {
-		return err
+	if m == MYSQL_TABLE {
+		d:= new(mysqlInfo)
+		tableInfo, err := mysql.DBTable.GetTable(mysqlF.Add)
+		if err != nil {
+			return nil,err
+
+		}
+		fileds, err := mysql.DBField.GetFields(mysqlF.Add)
+		if err != nil {
+			return nil,err
+		}
+
+		d.Name = tableInfo.Name
+		d.Comment = tableInfo.Comment
+		d.Fields = fileds
+		return d,nil
+	}
+
+	if m == MYSQL_DOC {
+		tableInfoList := []*mysqlInfo{}
+
+
+		tableList,err := mysql.DBTable.TableList()
+		if err != nil {
+			util.Exit(1, err.Error())
+		}
+		for _,list := range tableList{
+			var tableInfo = new(mysqlInfo)
+
+			tableInfo.Name = list.Name
+			tableInfo.Comment = list.Comment
+			fileds, err := mysql.DBField.GetFields(tableInfo.Name)
+			if err != nil {
+				return nil,err
+			}
+
+			tableInfo.Fields = fileds
+
+			indexs,err := mysql.DBIndex.GetIndexs(tableInfo.Name)
+			if err != nil {
+				return nil, err
+			}
+
+			tableInfo.Indexs = indexs
+
+			tableInfoList = append(tableInfoList,tableInfo)
+		}
+
+		fmt.Println(tableList)
+		return tableInfoList,nil
 
 	}
-	fileds, err := mysql.DBField.GetFields(mysqlF.Add)
-	if err != nil {
-		return err
-	}
 
-	data.Name = tableInfo.Name
-	data.Comment = tableInfo.Comment
-	data.Fields = fileds
-
-	return nil
+	return nil, nil
 }
