@@ -1,4 +1,4 @@
-package {{.BasePath}}
+package {{ "" | WithPacket }}
 
 import (
 	"bytes"

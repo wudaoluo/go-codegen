@@ -44,3 +44,16 @@ func (g *Generate) WithComment(args string) string {
 	return "// " + args
 
 }
+
+
+func (g *Generate) WithPacket(args string) string {
+	return g.Packet
+}
+
+func (g *Generate) WithString(args string) string {
+	if len(args) == 0 {
+		return ""
+	}
+
+	return string([]byte(args))
+}

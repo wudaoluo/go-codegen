@@ -34,13 +34,8 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "go-codegen",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "代码生成工具",
+	Long: `代码生成工具使用中遇到的问题，请在github提Issues`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
@@ -72,7 +67,7 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	//rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	rootCmd.PersistentFlags().BoolVar(&rootF.Debug, "debug", false, "开启debug模式 开启后不生成任何文件")
+	//rootCmd.PersistentFlags().BoolVar(&rootF.Debug, "debug", false, "开启debug模式 开启后不生成任何文件")
 	rootCmd.PersistentFlags().StringVarP(&rootF.OutPath, "outPath", "o", ".", "指定生成的文件路径")
 
 }

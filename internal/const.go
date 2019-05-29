@@ -15,7 +15,7 @@ const (
 )
 
 const (
-	SUFFIX_DOC = ".doc"
+	SUFFIX_DOC = ".md"
 	SUFFIX_GO  = ".go"
 )
 

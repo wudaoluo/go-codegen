@@ -18,6 +18,12 @@ type Generate struct {
 	funcMap template.FuncMap
 	Data    interface{}
 	iType   map[string]struct{}
+	Packet string
+}
+
+type TplData struct {
+	Packet string
+	Data   interface{}
 }
 
 func (g *Generate) Gen() error {
@@ -63,6 +69,10 @@ func (g *Generate) Gen() error {
 	return nil
 }
 
+func (g *Generate) SetPacket(outPath string) {
+	g.Packet = filepath.Base(outPath)
+}
+
 func (g *Generate) SetTpl(tpl string) {
 	g.Src = tpl
 }
@@ -85,9 +95,15 @@ func (g *Generate) AddFuncMap() {
 		g.iType = make(map[string]struct{})
 	}
 
+	if g.Data == nil {
+		g.Data = &TplData{}
+	}
+
 	g.funcMap["WithComment"] = g.WithComment
 	g.funcMap["TypeToGo"] = g.TypeToGo
 	g.funcMap["WithTitle"] = g.WithTitle
 	g.funcMap["WithNotFirstTitle"] = g.WithNotFirstTitle
 	g.funcMap["WithImport"] = g.WithImport
+	g.funcMap["WithPacket"] = g.WithPacket
+	g.funcMap["WithString"] = g.WithString
 }

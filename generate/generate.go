@@ -12,6 +12,7 @@ type Generater interface {
 	SetTpl(tpl string)
 	SetDest(dest string)
 	SetData(data interface{})
+	SetPacket(outPath string)
 	AddFuncMap()
 }
 

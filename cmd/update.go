@@ -25,7 +25,7 @@ import (
 // updateCmd represents the update command
 var updateCmd = &cobra.Command{
 	Use:   "update",
-	Short: "\n获取最新二进制程序",
+	Short: "获取最新二进制程序",
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if updateF.List {

@@ -24,8 +24,10 @@
      help        Help about any command
      mongo       A brief description of your command
      mysql       生成mysql语句和markdown文档
-     update      获取最新二进制程序
-     version     打印当前版本
+     update      
+   获取最新二进制程序
+     version     
+   打印当前版本
    
    Flags:
          --config string    config file (default "codegen.yaml")
@@ -45,3 +47,6 @@
     
    ### 生成表文档
     codegen mysql --add 表名 -o 指定目录 --type doc
+    
+    
+    

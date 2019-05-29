@@ -11,6 +11,6 @@ type FlagUpdate struct {
 
 type FlagMysql struct {
 	Add     string `json:"add"`
-	Type    string `json:"type"`
+	Doc     bool `json:"doc"`
 	Context bool   `json:"context"` //true:使用Context包;false:不使用,默认不使用
 }

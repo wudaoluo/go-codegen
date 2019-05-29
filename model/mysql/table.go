@@ -41,3 +41,35 @@ func (t *tableService) GetTable(tableName string) (*Table, error) {
 
 	return msg, err
 }
+
+
+func (t *tableService) TableList() ([]*Table,error) {
+	sqlText := "SELECT `table_name`, table_comment FROM information_schema.tables " +
+		"WHERE table_schema = ?"
+
+	rows,err := db.Query(sqlText,DBname)
+	if err != nil {
+		golog.Error("TableList", "DBname", DBname, "err", err)
+		return nil, err
+	}
+
+	var list []*Table
+	for rows.Next() {
+		msg := new(Table)
+		err = rows.Scan(&msg.Name,&msg.Comment)
+		if err != nil {
+			golog.Error("TableList", "DBname", DBname, "err", err)
+			return nil, err
+		}
+
+		list = append(list,msg)
+	}
+
+	if rows.Err() != nil {
+		golog.Error("TableList", "DBname", DBname, "err", err)
+		return nil, err
+	}
+
+	return list, nil
+
+}
