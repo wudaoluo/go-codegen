@@ -47,3 +47,6 @@
     
    ### 生成表文档
     codegen mysql --add 表名 -o 指定目录 --type doc
+    
+    
+    
