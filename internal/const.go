@@ -11,6 +11,7 @@ type Gen int
 const (
 	GEN_MYSQL_CONN Gen = iota + 1
 	GEN_MYSQL_TABLE
+	GEN_MYSQL_TABLE_PREPARE
 	GEN_MYSQL_DOC
 )
 
@@ -25,6 +26,8 @@ func (g Gen) String() string {
 		return "mysql init"
 	case GEN_MYSQL_TABLE:
 		return "mysql add table"
+	case GEN_MYSQL_TABLE_PREPARE:
+		return "mysql add table prepare"
 	case GEN_MYSQL_DOC:
 		return "mysql add doc"
 	default:
@@ -40,6 +43,9 @@ func (g Gen) TplFile() string {
 
 	case GEN_MYSQL_TABLE:
 		return TPL_MYSQL_TABLE
+
+	case GEN_MYSQL_TABLE_PREPARE:
+		return TPL_MYSQL_TABLE_PREPARE
 
 	case GEN_MYSQL_DOC:
 		return TPL_MYSQL_DOC
@@ -64,6 +70,7 @@ func (g Gen) FileSuffix() string {
 const (
 	TPL_MYSQL_CONN  = "tpl/mysql/mysql_conn.tpl"
 	TPL_MYSQL_TABLE = "tpl/mysql/mysql_table.tpl"
+	TPL_MYSQL_TABLE_PREPARE = "tpl/mysql/mysql_table_prepare.tpl"
 	TPL_MYSQL_DOC   = "tpl/mysql/mysql_doc.tpl"
 )
 

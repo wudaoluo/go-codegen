@@ -22,11 +22,12 @@ func Generate(genType internal.Gen) Generater {
 	case internal.GEN_MYSQL_CONN:
 		g = &mysql.MysqlConn{&generate.Generate{}}
 
-	case internal.GEN_MYSQL_TABLE:
+	case internal.GEN_MYSQL_TABLE,internal.GEN_MYSQL_TABLE_PREPARE:
 		g = &mysql.MysqlTable{&generate.Generate{}}
 
 	case internal.GEN_MYSQL_DOC:
 		g = &mysql.MysqlDoc{&generate.Generate{}}
+
 
 	default:
 		golog.Error("Generate 不匹配", "genType", genType)

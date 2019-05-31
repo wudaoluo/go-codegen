@@ -64,6 +64,7 @@ func init() {
 
 	mysqlCmd.Flags().StringVar(&mysqlF.Add, "add", "", "--add 表名")
 	mysqlCmd.Flags().BoolVar(&mysqlF.Doc, "doc", false, "--doc")
+	mysqlCmd.Flags().BoolVar(&mysqlF.Prepare,"prepare",false,"--prepare")
 }
 
 func getGen(t mysqlType, tableName string) (generate.Generater, error) {
@@ -76,6 +77,9 @@ func getGen(t mysqlType, tableName string) (generate.Generater, error) {
 		genType = internal.GEN_MYSQL_CONN
 	case MYSQL_TABLE:
 		genType = internal.GEN_MYSQL_TABLE
+		if mysqlF.Prepare {
+			genType = internal.GEN_MYSQL_TABLE_PREPARE
+		}
 
 	default:
 		golog.Warn("输出类型不匹配", "type", t)
@@ -90,7 +94,6 @@ func getGen(t mysqlType, tableName string) (generate.Generater, error) {
 	g := generate.Generate(genType)
 	g.SetDest(destFile(tableName) + genType.FileSuffix())
 	g.SetPacket(rootF.OutPath)
-	fmt.Println("data",data)
 	g.SetData(data)
 	return g, nil
 }
